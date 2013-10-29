@@ -1,0 +1,56 @@
+apply plugin: 'java'
+
+group = 'io.github.cthiebault'
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '1.8'
+}
+
+defaultTasks 'build'
+
+configurations {
+  compile
+  runtime
+  all*.exclude group: 'commons-logging'
+}
+
+ext {
+  orientDbVersion = '1.5.1'
+  slf4jVersion = '1.7.5'
+  springVersion = '3.2.4.RELEASE'
+}
+
+dependencies {
+  compile('com.google.code.findbugs:jsr305:2.0.1')
+  compile('com.google.code.gson:gson:2.2.4')
+  compile('com.google.guava:guava:15.0')
+  compile("com.orientechnologies:orient-commons:${orientDbVersion}")
+  compile("com.orientechnologies:orientdb-core:${orientDbVersion}")
+  compile("com.orientechnologies:orientdb-enterprise:${orientDbVersion}")
+  compile("com.orientechnologies:orientdb-object:${orientDbVersion}")
+  compile("com.orientechnologies:orientdb-server:${orientDbVersion}")
+  compile("org.slf4j:slf4j-api:${slf4jVersion}")
+  compile("org.springframework:spring-beans:${springVersion}")
+  compile("org.springframework:spring-context:${springVersion}")
+
+  runtime('ch.qos.logback:logback-classic:1.0.13')
+  runtime("org.slf4j:jul-to-slf4j:${slf4jVersion}")
+
+  testCompile('junit:junit:4.11')
+}
+
+test {
+  testLogging.showStandardStreams = true
+}
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+tasks.withType(Compile) {
+  options.encoding = 'UTF-8'
+}
