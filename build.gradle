@@ -35,11 +35,12 @@ dependencies {
   compile("org.slf4j:slf4j-api:${slf4jVersion}")
   compile("org.springframework:spring-beans:${springVersion}")
   compile("org.springframework:spring-context:${springVersion}")
+  compile("org.springframework:spring-test:${springVersion}")
 
   runtime('ch.qos.logback:logback-classic:1.0.13')
   runtime("org.slf4j:jul-to-slf4j:${slf4jVersion}")
 
-  testCompile('junit:junit:4.11')
+  testCompile('org.testng:testng:6.8.7')
 }
 
 test {
