@@ -39,6 +39,7 @@ dependencies {
 
   runtime('ch.qos.logback:logback-classic:1.0.13')
   runtime("org.slf4j:jul-to-slf4j:${slf4jVersion}")
+  runtime("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
 
   testCompile('org.testng:testng:6.8.7')
 }

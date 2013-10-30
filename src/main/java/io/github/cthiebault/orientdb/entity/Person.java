@@ -1,16 +1,22 @@
-package io.github.cthiebault.orientdb.model;
+package io.github.cthiebault.orientdb.entity;
 
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
-public class Person {
+import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
+
+public class Person implements HasUniqueProperties {
 
   @Nonnull
   private String firstName;
 
   @Nonnull
   private String lastName;
+
+  @Nonnull
+  private String username;
 
   private String email;
 
@@ -50,6 +56,25 @@ public class Person {
     this.addresses = addresses;
   }
 
+  @Nonnull
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(@Nonnull String username) {
+    this.username = username;
+  }
+
+  @Override
+  public List<String> getUniqueProperties() {
+    return Lists.newArrayList("username");
+  }
+
+  @Override
+  public List<Object> getUniqueValues() {
+    return Lists.<Object>newArrayList(username);
+  }
+
   @Override
   public boolean equals(Object o) {
     if(this == o) return true;
@@ -63,5 +88,11 @@ public class Person {
     int result = firstName.hashCode();
     result = 31 * result + lastName.hashCode();
     return result;
+  }
+
+  @Override
+  public String toString() {
+    return Objects.toStringHelper(this).add("firstName", firstName).add("lastName", lastName).add("username", username)
+        .add("email", email).add("addresses", addresses).toString();
   }
 }
