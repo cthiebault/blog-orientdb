@@ -7,6 +7,8 @@ import io.github.cthiebault.orientdb.entity.Person;
 
 public class Entities {
 
+  private Entities() {}
+
   public static Person createPerson() {
     Person person = new Person();
     person.setFirstName("Cedric");
@@ -29,5 +31,8 @@ public class Entities {
     person.setAddresses(Lists.newArrayList(address1, address2));
     return person;
   }
+
+
+
 
 }

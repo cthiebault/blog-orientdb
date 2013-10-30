@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 
 public class Acl implements HasUniqueProperties {
@@ -16,6 +17,15 @@ public class Acl implements HasUniqueProperties {
 
   @Nonnull
   private String resource;
+
+  public Acl() {
+  }
+
+  public Acl(@Nonnull String username, @Nonnull String permission, @Nonnull String resource) {
+    this.username = username;
+    this.permission = permission;
+    this.resource = resource;
+  }
 
   @Nonnull
   public String getUsername() {
@@ -45,6 +55,16 @@ public class Acl implements HasUniqueProperties {
   }
 
   @Override
+  public List<String> getUniqueProperties() {
+    return Lists.newArrayList("username", "permission", "resource");
+  }
+
+  @Override
+  public List<Object> getUniqueValues() {
+    return Lists.<Object>newArrayList(username, permission, resource);
+  }
+
+  @Override
   public boolean equals(Object o) {
     if(this == o) return true;
     if(!(o instanceof Acl)) return false;
@@ -61,12 +81,8 @@ public class Acl implements HasUniqueProperties {
   }
 
   @Override
-  public List<String> getUniqueProperties() {
-    return Lists.newArrayList("username", "permission", "resource");
-  }
-
-  @Override
-  public List<Object> getUniqueValues() {
-    return Lists.<Object>newArrayList(username, permission, resource);
+  public String toString() {
+    return Objects.toStringHelper(this).add("username", username).add("permission", permission)
+        .add("resource", resource).toString();
   }
 }

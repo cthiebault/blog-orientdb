@@ -1,6 +1,5 @@
 package io.github.cthiebault.orientdb.document;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -9,9 +8,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.orientechnologies.common.collection.OCompositeKey;
 import com.orientechnologies.common.exception.OException;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.db.record.OIdentifiable;
@@ -115,9 +114,13 @@ public class DocumentService {
 
   public ODocument findUniqueDocument(ODatabaseDocumentTx db, HasUniqueProperties template) {
     OIndex<?> index = db.getMetadata().getIndexManager().getIndex(getIndexName(template));
-    Collection<Object> values = template.getUniqueValues();
-    OIdentifiable identifiable = (OIdentifiable) index
-        .get(values.size() > 1 ? values : Iterables.getOnlyElement(values));
+    OIdentifiable identifiable;
+    if(template.getUniqueValues().size() == 1) {
+      identifiable = (OIdentifiable) index.get(template.getUniqueValues().get(0));
+    } else {
+      OCompositeKey key = new OCompositeKey(template.getUniqueValues());
+      identifiable = (OIdentifiable) index.get(key);
+    }
     return identifiable == null ? null : identifiable.<ODocument>getRecord();
   }
 

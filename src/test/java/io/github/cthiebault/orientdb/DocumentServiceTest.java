@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 
 import io.github.cthiebault.orientdb.commons.OrientDbServerFactory;
 import io.github.cthiebault.orientdb.document.DocumentService;
+import io.github.cthiebault.orientdb.entity.Acl;
 import io.github.cthiebault.orientdb.entity.Person;
 
 @ContextConfiguration("classpath:applicationContext-test.xml")
@@ -40,6 +41,23 @@ public class DocumentServiceTest extends AbstractTestNGSpringContextTests {
     for(int i = 0; i < nbAddresses; i++) {
       AssertJUnit.assertEquals(found.getAddresses().get(i), person.getAddresses().get(i));
     }
+  }
+
+  @Test
+  public void testPersistComposedIndex() {
+
+    documentService.createUniqueIndex(Acl.class);
+
+    Acl acl = new Acl("cthiebault", "create", "user");
+    log.debug("acl: {}", acl);
+
+    documentService.save(acl);
+
+    Acl found = documentService.findUnique(acl);
+
+    log.debug("found: {}", found);
+
+    AssertJUnit.assertEquals(found, acl);
 
   }
 
