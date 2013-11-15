@@ -1,4 +1,4 @@
-package io.github.cthiebault.orientdb.entity;
+package io.github.cthiebault.orientdb.document.entity;
 
 import com.google.common.base.Objects;
 

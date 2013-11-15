@@ -1,13 +1,16 @@
-package io.github.cthiebault.orientdb.entity;
+package io.github.cthiebault.orientdb.object.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
 
-public class Person implements HasUniqueProperties {
+import io.github.cthiebault.orientdb.document.entity.Address;
+import io.github.cthiebault.orientdb.document.entity.Group;
+
+public class User extends AbstractOrientDbEntity {
 
   @Nonnull
   private String firstName;
@@ -20,7 +23,9 @@ public class Person implements HasUniqueProperties {
 
   private String email;
 
-  private List<Address> addresses;
+  private List<Address> addresses = new ArrayList<>();
+
+  private List<Group> groups = new ArrayList<>();
 
   @Nonnull
   public String getFirstName() {
@@ -65,34 +70,17 @@ public class Person implements HasUniqueProperties {
     this.username = username;
   }
 
-  @Override
-  public List<String> getUniqueProperties() {
-    return Lists.newArrayList("username");
+  public List<Group> getGroups() {
+    return groups;
   }
 
-  @Override
-  public List<Object> getUniqueValues() {
-    return Lists.<Object>newArrayList(username);
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if(this == o) return true;
-    if(!(o instanceof Person)) return false;
-    Person person = (Person) o;
-    return firstName.equals(person.firstName) && lastName.equals(person.lastName);
-  }
-
-  @Override
-  public int hashCode() {
-    int result = firstName.hashCode();
-    result = 31 * result + lastName.hashCode();
-    return result;
+  public void setGroups(List<Group> groups) {
+    this.groups = groups;
   }
 
   @Override
   public String toString() {
-    return Objects.toStringHelper(this).add("firstName", firstName).add("lastName", lastName).add("username", username)
-        .add("email", email).add("addresses", addresses).toString();
+    return Objects.toStringHelper(this).add("id", getId()).add("firstName", firstName).add("lastName", lastName)
+        .add("username", username).add("email", email).add("groups", groups).add("addresses", addresses).toString();
   }
 }
